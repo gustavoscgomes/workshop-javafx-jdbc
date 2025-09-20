@@ -1,0 +1,65 @@
+package io.github.gustavoscgomes.workshopjavafxjdbc.controller;
+
+import io.github.gustavoscgomes.workshopjavafxjdbc.HelloApplication;
+import io.github.gustavoscgomes.workshopjavafxjdbc.util.Alerts;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class HelloController implements Initializable {
+
+    @FXML
+    private MenuItem menuItemSeller;
+    @FXML
+    private MenuItem menuItemDepartment;
+    @FXML
+    private MenuItem menuItemAbout;
+
+    @FXML
+    public void onMenuItemSellerAction(){
+        System.out.println("onMenuItemSellerAction");
+    }
+
+    @FXML
+    public void onMenuItemDepartmentAction(){
+        System.out.println("onMenuItemDepartmentAction");
+    }
+
+    @FXML
+    public void onMenuItemAboutAction(){
+        loadView("/io/github/gustavoscgomes/workshopjavafxjdbc/about-view.fxml");
+    }
+
+    public synchronized void loadView( String absoluteName) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(absoluteName));
+            VBox vBox = fxmlLoader.load();
+
+            Scene scene = HelloApplication.getMainScene();
+            VBox mainVbox = (VBox) ((ScrollPane) scene.getRoot()).getContent();
+
+            Node mainMenu = mainVbox.getChildren().get(0);
+            mainVbox.getChildren().clear();
+            mainVbox.getChildren().add(mainMenu);
+            mainVbox.getChildren().addAll(vBox.getChildren());
+
+        } catch (IOException e) {
+            Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+}
