@@ -8,6 +8,4 @@ module io.github.gustavoscgomes.workshopjavafxjdbc {
 
     opens io.github.gustavoscgomes.workshopjavafxjdbc to javafx.fxml;
     exports io.github.gustavoscgomes.workshopjavafxjdbc;
-    exports io.github.gustavoscgomes.workshopjavafxjdbc.controller;
-    opens io.github.gustavoscgomes.workshopjavafxjdbc.controller to javafx.fxml;
 }

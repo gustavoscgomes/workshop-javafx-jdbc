@@ -1,6 +1,5 @@
-package io.github.gustavoscgomes.workshopjavafxjdbc.controller;
+package io.github.gustavoscgomes.workshopjavafxjdbc;
 
-import io.github.gustavoscgomes.workshopjavafxjdbc.HelloApplication;
 import io.github.gustavoscgomes.workshopjavafxjdbc.util.Alerts;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
