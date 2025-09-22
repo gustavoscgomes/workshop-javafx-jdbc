@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 public class HelloController implements Initializable {
 
@@ -27,21 +28,25 @@ public class HelloController implements Initializable {
     private MenuItem menuItemAbout;
 
     @FXML
-    public void onMenuItemSellerAction(){
+    public void onMenuItemSellerAction() {
         System.out.println("onMenuItemSellerAction");
     }
 
     @FXML
-    public void onMenuItemDepartmentAction(){
-        loadView2("/io/github/gustavoscgomes/workshopjavafxjdbc/departmentlist-view.fxml");
+    public void onMenuItemDepartmentAction() {
+        loadView("/io/github/gustavoscgomes/workshopjavafxjdbc/departmentlist-view.fxml",
+                (DepartmentListController controller) -> {
+                    controller.setService(new DepartmentService());
+                    controller.updateTableView();
+                });
     }
 
     @FXML
-    public void onMenuItemAboutAction(){
-        loadView("/io/github/gustavoscgomes/workshopjavafxjdbc/about-view.fxml");
+    public void onMenuItemAboutAction() {
+        loadView("/io/github/gustavoscgomes/workshopjavafxjdbc/about-view.fxml", x -> {});
     }
 
-    public synchronized void loadView( String absoluteName) {
+    public synchronized <T> void loadView(String absoluteName, Consumer<T> initializingAction) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(absoluteName));
             VBox vBox = fxmlLoader.load();
@@ -54,12 +59,15 @@ public class HelloController implements Initializable {
             mainVbox.getChildren().add(mainMenu);
             mainVbox.getChildren().addAll(vBox.getChildren());
 
+            T controller = fxmlLoader.getController();
+            initializingAction.accept(controller);
+
         } catch (IOException e) {
             Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    public synchronized void loadView2( String absoluteName) {
+    public synchronized void loadView2(String absoluteName) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(absoluteName));
             VBox vBox = fxmlLoader.load();

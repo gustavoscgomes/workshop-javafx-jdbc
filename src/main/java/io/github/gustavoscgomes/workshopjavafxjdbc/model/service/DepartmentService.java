@@ -1,5 +1,7 @@
 package io.github.gustavoscgomes.workshopjavafxjdbc.model.service;
 
+import io.github.gustavoscgomes.workshopjavafxjdbc.model.dao.DaoFactory;
+import io.github.gustavoscgomes.workshopjavafxjdbc.model.dao.DepartmentDao;
 import io.github.gustavoscgomes.workshopjavafxjdbc.model.entities.Department;
 
 import java.util.ArrayList;
@@ -7,11 +9,9 @@ import java.util.List;
 
 public class DepartmentService {
 
+    private DepartmentDao dao = DaoFactory.createDepartmentDao();
+
     public List<Department> findAll() {
-        List<Department> list = new ArrayList<>();
-        list.add(new Department(1, "Books"));
-        list.add(new Department(2, "Computers"));
-        list.add(new Department(3, "Eletronics"));
-        return list;
+        return dao.findAll();
     }
 }
