@@ -1,5 +1,7 @@
-package io.github.gustavoscgomes.workshopjavafxjdbc;
+package io.github.gustavoscgomes.workshopjavafxjdbc.controller;
 
+import io.github.gustavoscgomes.workshopjavafxjdbc.HelloApplication;
+import io.github.gustavoscgomes.workshopjavafxjdbc.model.service.DepartmentService;
 import io.github.gustavoscgomes.workshopjavafxjdbc.util.Alerts;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +33,7 @@ public class HelloController implements Initializable {
 
     @FXML
     public void onMenuItemDepartmentAction(){
-        loadView("/io/github/gustavoscgomes/workshopjavafxjdbc/departmentlist-view.fxml");
+        loadView2("/io/github/gustavoscgomes/workshopjavafxjdbc/departmentlist-view.fxml");
     }
 
     @FXML
@@ -51,6 +53,28 @@ public class HelloController implements Initializable {
             mainVbox.getChildren().clear();
             mainVbox.getChildren().add(mainMenu);
             mainVbox.getChildren().addAll(vBox.getChildren());
+
+        } catch (IOException e) {
+            Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    public synchronized void loadView2( String absoluteName) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(absoluteName));
+            VBox vBox = fxmlLoader.load();
+
+            Scene scene = HelloApplication.getMainScene();
+            VBox mainVbox = (VBox) ((ScrollPane) scene.getRoot()).getContent();
+
+            Node mainMenu = mainVbox.getChildren().get(0);
+            mainVbox.getChildren().clear();
+            mainVbox.getChildren().add(mainMenu);
+            mainVbox.getChildren().addAll(vBox.getChildren());
+
+            DepartmentListController controller = fxmlLoader.getController();
+            controller.setService(new DepartmentService());
+            controller.updateTableView();
 
         } catch (IOException e) {
             Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), Alert.AlertType.ERROR);
