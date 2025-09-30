@@ -8,6 +8,7 @@ module io.github.gustavoscgomes.workshopjavafxjdbc {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
+    requires jdk.jshell;
 
     // Abre o pacote principal para o JavaFX
     opens io.github.gustavoscgomes.workshopjavafxjdbc to javafx.fxml;
