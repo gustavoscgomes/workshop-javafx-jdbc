@@ -2,6 +2,7 @@ package io.github.gustavoscgomes.workshopjavafxjdbc.controller;
 
 import io.github.gustavoscgomes.workshopjavafxjdbc.HelloApplication;
 import io.github.gustavoscgomes.workshopjavafxjdbc.model.service.DepartmentService;
+import io.github.gustavoscgomes.workshopjavafxjdbc.model.service.SellerService;
 import io.github.gustavoscgomes.workshopjavafxjdbc.util.Alerts;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +30,11 @@ public class HelloController implements Initializable {
 
     @FXML
     public void onMenuItemSellerAction() {
-        System.out.println("onMenuItemSellerAction");
+        loadView("/io/github/gustavoscgomes/workshopjavafxjdbc/sellerlist-view.fxml",
+                (SellerListController controller) -> {
+                    controller.setService(new SellerService());
+                    controller.updateTableView();
+                });
     }
 
     @FXML
