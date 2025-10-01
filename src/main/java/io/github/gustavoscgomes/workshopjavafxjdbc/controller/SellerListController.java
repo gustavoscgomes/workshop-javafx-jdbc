@@ -4,6 +4,7 @@ import io.github.gustavoscgomes.workshopjavafxjdbc.HelloApplication;
 import io.github.gustavoscgomes.workshopjavafxjdbc.db.DbIntegrityException;
 import io.github.gustavoscgomes.workshopjavafxjdbc.listener.DataChangeListener;
 import io.github.gustavoscgomes.workshopjavafxjdbc.model.entities.Seller;
+import io.github.gustavoscgomes.workshopjavafxjdbc.model.service.DepartmentService;
 import io.github.gustavoscgomes.workshopjavafxjdbc.model.service.SellerService;
 import io.github.gustavoscgomes.workshopjavafxjdbc.util.Alerts;
 import io.github.gustavoscgomes.workshopjavafxjdbc.util.Utils;
@@ -111,7 +112,8 @@ public class SellerListController implements Initializable, DataChangeListener {
 
             SellerFormController controller = fxmlLoader.getController();
             controller.setEntity(obj);
-            controller.setService(new SellerService());
+            controller.setServices(new SellerService(), new DepartmentService());
+            controller.loadAssociatedObjects();
             controller.subscribeDataChangeListener(this);
             controller.updateFormDate();
 
@@ -124,6 +126,7 @@ public class SellerListController implements Initializable, DataChangeListener {
             dialogStage.showAndWait();
 
         } catch (IOException e) {
+            e.printStackTrace();
             Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), Alert.AlertType.ERROR);
         }
     }
@@ -184,8 +187,7 @@ public class SellerListController implements Initializable, DataChangeListener {
             try {
                 service.remove(obj);
                 updateTableView();
-            }
-            catch (DbIntegrityException e) {
+            } catch (DbIntegrityException e) {
                 Alerts.showAlert("Error removing object", null, e.getMessage(), Alert.AlertType.ERROR);
             }
         }
