@@ -19,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -123,6 +124,25 @@ public class SellerFormController implements Initializable {
         }
         obj.setName(textFieldName.getText());
 
+        if (textFieldEmail.getText() == null || textFieldEmail.getText().trim().isEmpty()) {
+            exception.addErrors("email", "Field can't be empty");
+        }
+        obj.setEmail(textFieldEmail.getText());
+
+        if (dpBirthDate.getValue() == null) {
+            exception.addErrors("birthDate", "Field can't be empty");
+        } else {
+            Instant instant = Instant.from(dpBirthDate.getValue().atStartOfDay(ZoneId.systemDefault()));
+            obj.setBirthDate(Date.from(instant));
+        }
+
+        if (textFieldBaseSalary.getText() == null || textFieldBaseSalary.getText().trim().isEmpty()) {
+            exception.addErrors("baseSalary", "Field can't be empty");
+        }
+        obj.setBaseSalary(Utils.tryParseToDouble(textFieldBaseSalary.getText()));
+
+        obj.setDepartment(comboBoxDepartment.getValue());
+
         if (!exception.getErrors().isEmpty()) {
             throw exception;
         }
@@ -177,9 +197,11 @@ public class SellerFormController implements Initializable {
 
     public void setErrorMessages(Map<String, String> erros) {
         Set<String> fields = erros.keySet();
-        if (fields.contains("name")) {
-            labelErrorName.setText(erros.get("name"));
-        }
+
+        labelErrorName.setText((fields.contains("name") ? erros.get("name"): ""));
+        labelErrorEmail.setText((fields.contains("email") ? erros.get("email"): ""));
+        labelErrorBirthDate.setText((fields.contains("birthDate") ? erros.get("birthDate"): ""));
+        labelErrorBaseSalary.setText((fields.contains("baseSalary") ? erros.get("baseSalary"): ""));
     }
 
     private void initializeComboBoxDepartment() {
